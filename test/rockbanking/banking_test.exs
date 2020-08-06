@@ -3,32 +3,62 @@ defmodule RockBanking.BankingTest do
 
   alias RockBanking.Banking
 
-  describe "users" do
-    alias RockBanking.Banking.User
+  describe "create_user/1" do
+    test "returns success and a created user when attrs passed are valid" do
+      attrs = %{
+        email: "some@email.net",
+        name: "My Name",
+        password: "superpassw0rd"
+      }
 
-    @valid_attrs %{
-      balance: 120.5,
-      email: "some email",
-      id: "7488a646-e31f-11e4-aace-600308960662",
-      name: "some name",
-      password_hash: "some password_hash"
-    }
-    @update_attrs %{
-      balance: 456.7,
-      email: "some updated email",
-      id: "7488a646-e31f-11e4-aace-600308960668",
-      name: "some updated name",
-      password_hash: "some updated password_hash"
-    }
-    @invalid_attrs %{balance: nil, email: nil, id: nil, name: nil, password_hash: nil}
+      assert {:ok, user} = Banking.create_user(attrs)
+      assert user.email == "some@email.net"
+      assert user.name == "My Name"
+      assert user.password_hash != "superpassw0rd"
+      assert user.password_hash != ""
+      assert user.balance == 0
+    end
 
-    def user_fixture(attrs \\ %{}) do
-      {:ok, user} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Banking.create_user()
+    test "returns an error and an Ecto.Changeset when an invalid email is passed in attrs" do
+      attrs = %{
+        email: "someemail.net",
+        name: "My Name",
+        password: "superpassw0rd"
+      }
 
-      user
+      assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
+      assert %{email: ["has invalid format"]} = errors_on(changeset)
+
+      attrs = %{
+        email: "",
+        name: "My Name",
+        password: "superpassw0rd"
+      }
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
+      assert %{email: ["can't be blank"]} = errors_on(changeset)
+    end
+
+    test "returns an error and an Ecto.Changeset when an invalid name is passed in attrs" do
+      attrs = %{
+        email: "some@email.net",
+        name: "",
+        password: "superpassw0rd"
+      }
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
+      assert %{name: ["can't be blank"]} = errors_on(changeset)
+    end
+
+    test "returns an error and an Ecto.Changeset when an invalid password is passed in attrs" do
+      attrs = %{
+        email: "some@email.net",
+        name: "My Name",
+        password: ""
+      }
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
+      assert %{password: ["can't be blank"]} = errors_on(changeset)
     end
   end
 end

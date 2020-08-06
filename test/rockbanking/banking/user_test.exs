@@ -1,8 +1,9 @@
 defmodule RockBanking.Banking.UserTest do
   use RockBanking.DataCase, async: true
+
   alias RockBanking.Banking.User
 
-  describe "create" do
+  describe "create/2" do
     test "returns an ecto changeset without errors when params are valid" do
       params = %{name: "Bruno Anken", email: "brunoanken@gmail.com", password: "1234"}
 

@@ -1,6 +1,6 @@
 defmodule RockBanking.Banking do
   @moduledoc """
-  The Banking context.
+  The Banking context. It is responsible to manage all users and operations related to banking.
   """
 
   import Ecto.Query, warn: false
