@@ -5,8 +5,10 @@ defmodule RockBankingWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", RockBankingWeb do
+  scope "/api/v1", RockBankingWeb do
     pipe_through :api
+
+    post("/users/sign_up", UserController, :sign_up)
   end
 
   # Enables LiveDashboard only for development
