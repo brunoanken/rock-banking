@@ -25,8 +25,28 @@ defmodule RockBanking.Banking.User do
     |> validate_required([:name, :email, :password])
     |> unique_constraint(:email)
     |> validate_format(:email, ~r/@/)
+    |> validate_length(:password, is: 4)
+    |> validate_password()
     |> put_password_hash()
   end
+
+  def is_string_a_valid_integer?(string) do
+    case Integer.parse(string) do
+      {_, ""} -> true
+      _ -> false
+    end
+  end
+
+  defp validate_password(
+         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
+       ) do
+    case is_string_a_valid_integer?(password) do
+      true -> changeset
+      _ -> add_error(changeset, :password, "Invalid format")
+    end
+  end
+
+  defp validate_password(changeset), do: changeset
 
   defp put_password_hash(
          %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset

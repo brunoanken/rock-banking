@@ -34,11 +34,32 @@ defmodule RockBanking.Banking.UserTest do
       assert %{name: ["can't be blank"]} == errors_on(user)
     end
 
-    test "returns an ecto changeset with password error when the password param is invalid" do
+    test "returns an ecto changeset with password error when the password param is an empty string" do
       params = %{name: "Bruno Anken", email: "brunoanken@gmail.com", password: ""}
 
       assert %Ecto.Changeset{} = user = User.create(%User{}, params)
       assert %{password: ["can't be blank"]} == errors_on(user)
+    end
+
+    test "returns an ecto changeset with password error when the password is not passed at all" do
+      params = %{name: "Bruno Anken", email: "brunoanken@gmail.com"}
+
+      assert %Ecto.Changeset{} = user = User.create(%User{}, params)
+      assert %{password: ["can't be blank"]} = errors_on(user)
+    end
+  end
+
+  describe "is_string_a_valid_integer?" do
+    test "returns true when receiving a string that is a completely valid integer" do
+      assert User.is_string_a_valid_integer?("1234") == true
+      assert User.is_string_a_valid_integer?("1") == true
+      assert User.is_string_a_valid_integer?("123423") == true
+    end
+
+    test "returns false when receiving a string that isnot a completely valid integer" do
+      assert User.is_string_a_valid_integer?("123.4") == false
+      assert User.is_string_a_valid_integer?("0.1") == false
+      assert User.is_string_a_valid_integer?("edmar") == false
     end
   end
 end

@@ -8,13 +8,13 @@ defmodule RockBanking.BankingTest do
       attrs = %{
         email: "some@email.net",
         name: "My Name",
-        password: "superpassw0rd"
+        password: "1234"
       }
 
       assert {:ok, user} = Banking.create_user(attrs)
       assert user.email == "some@email.net"
       assert user.name == "My Name"
-      assert user.password_hash != "superpassw0rd"
+      assert user.password_hash != "1234"
       assert user.password_hash != ""
       assert user.balance == 0
     end
@@ -23,7 +23,7 @@ defmodule RockBanking.BankingTest do
       attrs = %{
         email: "someemail.net",
         name: "My Name",
-        password: "superpassw0rd"
+        password: "1234"
       }
 
       assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
@@ -32,7 +32,7 @@ defmodule RockBanking.BankingTest do
       attrs = %{
         email: "",
         name: "My Name",
-        password: "superpassw0rd"
+        password: "1234"
       }
 
       assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
@@ -43,14 +43,14 @@ defmodule RockBanking.BankingTest do
       attrs = %{
         email: "some@email.net",
         name: "",
-        password: "superpassw0rd"
+        password: "1234"
       }
 
       assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
       assert %{name: ["can't be blank"]} = errors_on(changeset)
     end
 
-    test "returns an error and an Ecto.Changeset when an invalid password is passed in attrs" do
+    test "returns an error and an Ecto.Changeset with password error when an empty password is passed in attrs" do
       attrs = %{
         email: "some@email.net",
         name: "My Name",
@@ -65,7 +65,7 @@ defmodule RockBanking.BankingTest do
       attrs = %{
         email: "some@email.net",
         name: "My Name",
-        password: "superpassw0rd"
+        password: "1234"
       }
 
       assert {:ok, user} = Banking.create_user(attrs)
