@@ -69,7 +69,7 @@ defmodule RockBanking.BankingTest do
       }
 
       assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
-      assert %{password: ["Invalid format"]} = errors_on(changeset)
+      assert %{password: ["should be 4 character(s)"]} = errors_on(changeset)
 
       attrs = %{
         email: "some@email.net",
@@ -78,7 +78,7 @@ defmodule RockBanking.BankingTest do
       }
 
       assert {:error, %Ecto.Changeset{} = changeset} = Banking.create_user(attrs)
-      assert %{password: ["can't be blank"]} = errors_on(changeset)
+      assert %{password: ["Invalid format"]} = errors_on(changeset)
     end
 
     test "returns an error when attempting to create a user with an already used email" do
