@@ -45,7 +45,8 @@ defmodule RockBanking.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:comeonin, "~> 5.3"},
-      {:argon2_elixir, "~> 2.0"}
+      {:argon2_elixir, "~> 2.0"},
+      {:guardian, "~> 2.0"}
     ]
   end
 

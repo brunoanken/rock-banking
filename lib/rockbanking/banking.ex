@@ -16,4 +16,12 @@ defmodule RockBanking.Banking do
     |> User.create(attrs)
     |> Repo.insert()
   end
+
+  @doc """
+  Gets a user by ID.
+  """
+  def get_user(id) do
+    %User{}
+    |> Repo.get(id)
+  end
 end
