@@ -4,24 +4,15 @@ defmodule RockBankingWeb.UserControllerTest do
   alias RockBanking.Banking
   alias RockBanking.Banking.User
 
-  @create_attrs %{
-    balance: 120.5,
-    email: "some email",
-    id: "7488a646-e31f-11e4-aace-600308960662",
-    name: "some name",
-    password_hash: "some password_hash"
+  @valid_attrs %{
+    email: "email@email.mail",
+    name: "My Beautiful Name",
+    password: "1234"
   }
-  @update_attrs %{
-    balance: 456.7,
-    email: "some updated email",
-    id: "7488a646-e31f-11e4-aace-600308960668",
-    name: "some updated name",
-    password_hash: "some updated password_hash"
-  }
-  @invalid_attrs %{balance: nil, email: nil, id: nil, name: nil, password_hash: nil}
+  @invalid_attrs %{email: nil, name: nil, password: nil}
 
   def fixture(:user) do
-    {:ok, user} = Banking.create_user(@create_attrs)
+    {:ok, user} = Banking.create_user(@valid_attrs)
     user
   end
 
@@ -32,5 +23,17 @@ defmodule RockBankingWeb.UserControllerTest do
   defp create_user(_) do
     user = fixture(:user)
     %{user: user}
+  end
+
+  describe "sign_up/1" do
+    test "returns the user json with 201 status code when data is valid", %{conn: conn} do
+      conn = post(conn, Routes.user_path(conn, :sign_up), @valid_attrs)
+      assert %{"user_id" => user_id} = json_response(conn, 201)["data"]
+    end
+
+    test "returns an error json with 422 status when data is valid", %{conn: conn} do
+      conn = post(conn, Routes.user_path(conn, :sign_up), @invalid_attrs)
+      assert _ = response(conn, 422)
+    end
   end
 end
