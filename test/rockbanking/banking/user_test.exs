@@ -1,6 +1,7 @@
 defmodule RockBanking.Banking.UserTest do
   use RockBanking.DataCase, async: true
 
+  alias RockBanking.Banking
   alias RockBanking.Banking.User
 
   describe "create/2" do
@@ -85,6 +86,39 @@ defmodule RockBanking.Banking.UserTest do
 
       assert %Ecto.Changeset{errors: [password: {"Invalid format", []}]} =
                User.validate_password(user_changeset)
+    end
+  end
+
+  describe "update_balance/1" do
+    setup do
+      attrs = %{
+        email: "some@email.net",
+        name: "My Name",
+        password: "1234",
+        id: 42
+      }
+
+      {:ok, user} = Banking.create_user(attrs)
+      %{user: user}
+    end
+
+    test "returns a valid ecto changeset when params are valid", %{user: user} do
+      assert %Ecto.Changeset{valid?: true, changes: %{balance: 1000.00}} =
+               User.update_balance(user, %{balance: 1000.00})
+
+      assert %Ecto.Changeset{valid?: true} = User.update_balance(user, %{balance: 0.00})
+    end
+
+    test "rturns an invalid ecto changeset when params are invalid", %{user: user} do
+      assert %Ecto.Changeset{valid?: false, changes: %{balance: -0.01}} =
+               user_changeset = User.update_balance(user, %{balance: -0.01})
+
+      assert %{balance: ["must be greater than or equal to 0"]} = errors_on(user_changeset)
+
+      assert %Ecto.Changeset{valid?: false, changes: %{balance: -1.0}} =
+               user_changeset = User.update_balance(user, %{balance: -1})
+
+      assert %{balance: ["must be greater than or equal to 0"]} = errors_on(user_changeset)
     end
   end
 end
