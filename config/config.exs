@@ -31,6 +31,6 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
 
-config :rockbanking, RockBanking.Guardian,
+config :rockbanking, RockBankingWeb.Guardian,
   issuer: "rockbanking",
-  secret_key: "/31vVXqmuEmkd+98bm9uFe1uRH83sqHQDIwN0Rlgc7G9j4zljEQfSKMbpgVOpGW9"
+  secret_key: "UIfxJSqAF52vUZHqs4J4/MNrgbRyyOEjtt895ezSRO8itkn7ZSDNJm+OYBgoZC9o"
