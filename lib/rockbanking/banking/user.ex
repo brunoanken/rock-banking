@@ -8,7 +8,6 @@ defmodule RockBanking.Banking.User do
   schema "users" do
     field :balance, :float, default: 0.00, null: false
     field :email, :string, null: false, unique: true
-    field :user_id, Ecto.UUID, autogenerate: true, primary_key: true
     field :name, :string, null: false
     field :password, :string, null: true, virtual: true
     field :password_hash, :string, null: false

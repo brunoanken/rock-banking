@@ -10,7 +10,7 @@ defmodule RockBankingWeb.UserView do
     %{
       name: user.name,
       email: user.email,
-      user_id: user.user_id,
+      id: user.id,
       balance: user.balance
     }
   end

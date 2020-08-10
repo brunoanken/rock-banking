@@ -28,7 +28,7 @@ defmodule RockBankingWeb.UserControllerTest do
   describe "sign_up/1" do
     test "returns the user json with 201 status code when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :sign_up), @valid_attrs)
-      assert %{"user_id" => user_id} = json_response(conn, 201)["data"]
+      assert %{"id" => id} = json_response(conn, 201)["data"]
     end
 
     test "returns an error json with 422 status when data is valid", %{conn: conn} do
