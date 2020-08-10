@@ -20,7 +20,7 @@ defmodule RockBanking.Operations.SignUpBonusTest do
       params = %{amount: 1000.00, user_id: user.id}
 
       assert %Ecto.Changeset{valid?: true, changes: %{amount: 1000.00}} =
-               sign_up_bonus = SignUpBonus.changeset(%SignUpBonus{}, params)
+               SignUpBonus.changeset(%SignUpBonus{}, params)
     end
 
     test "returns an invalid ecto changeset when params are invalid", %{user: user} do

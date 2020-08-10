@@ -1,9 +1,6 @@
 defmodule RockBankingWeb.UserControllerTest do
   use RockBankingWeb.ConnCase
 
-  alias RockBanking.Banking
-  alias RockBanking.Banking.User
-
   @valid_attrs %{
     email: "email@email.mail",
     name: "My Beautiful Name",
