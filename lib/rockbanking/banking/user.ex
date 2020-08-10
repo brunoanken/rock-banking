@@ -4,6 +4,7 @@ defmodule RockBanking.Banking.User do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  alias RockBanking.Operations.SignUpBonus
 
   schema "users" do
     field :balance, :float, default: 0.00, null: false
@@ -11,6 +12,7 @@ defmodule RockBanking.Banking.User do
     field :name, :string, null: false
     field :password, :string, null: true, virtual: true
     field :password_hash, :string, null: false
+    has_one :sign_up_bonus, SignUpBonus
 
     timestamps()
   end
@@ -27,6 +29,12 @@ defmodule RockBanking.Banking.User do
     |> validate_length(:password, is: 4)
     |> validate_password()
     |> put_password_hash()
+  end
+
+  def update_balance(user, attrs) do
+    user
+    |> cast(attrs, [:balance])
+    |> validate_number(:balance, greater_than_or_equal_to: 0)
   end
 
   def is_string_a_valid_integer?(string) do

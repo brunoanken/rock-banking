@@ -3,11 +3,13 @@ defmodule RockBankingWeb.UserController do
 
   alias RockBanking.Banking
   alias RockBanking.Banking.User
+  alias RockBanking.Operations
 
   action_fallback RockBankingWeb.FallbackController
 
   def sign_up(conn, params) do
-    with {:ok, user} <- Banking.create_user(params) do
+    with {:ok, user} <- Banking.create_user(params),
+         {:ok, %{user: user}} <- Operations.create_sign_up_bonus(user) do
       conn
       |> put_status(:created)
       |> render("show.json", %{user: user})
