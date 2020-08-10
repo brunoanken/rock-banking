@@ -4,18 +4,18 @@ defmodule RockBanking.Operations.SignUpBonusTest do
   alias RockBanking.Operations.SignUpBonus
   alias RockBanking.Banking
 
+  setup do
+    attrs = %{
+      email: "some@email.net",
+      name: "My Name",
+      password: "1234"
+    }
+
+    {:ok, user} = Banking.create_user(attrs)
+    %{user: user}
+  end
+
   describe "changeset/2" do
-    setup do
-      attrs = %{
-        email: "some@email.net",
-        name: "My Name",
-        password: "1234"
-      }
-
-      {:ok, user} = Banking.create_user(attrs)
-      %{user: user}
-    end
-
     test "returns a valid ecto changeset when params are valid", %{user: user} do
       params = %{amount: 1000.00, user_id: user.id}
 
@@ -35,6 +35,24 @@ defmodule RockBanking.Operations.SignUpBonusTest do
                SignUpBonus.changeset(%SignUpBonus{}, %{amount: 1000.00, user_id: "randomid"})
 
       assert %{user_id: ["is invalid"]} = errors_on(sign_up_bonus)
+    end
+  end
+
+  describe "create/2" do
+    test "returns an ecto multi with valid operations when params are valid", %{user: user} do
+      assert %Ecto.Multi{} = multi = SignUpBonus.create(user, %SignUpBonus{})
+      assert multi.operations |> Enum.count() == 2
+
+      operations_changesets_list =
+        multi.operations
+        |> Enum.map(fn operation ->
+          RockBanking.TestHelpers.get_changeset_from_operation(operation)
+        end)
+
+      assert operations_changesets_list |> Enum.count() == 2
+
+      assert operations_changesets_list |> Enum.all?(fn operation -> operation.valid? == true end) ==
+               true
     end
   end
 end
