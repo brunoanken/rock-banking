@@ -11,18 +11,8 @@ defmodule RockBankingWeb.UserControllerTest do
   }
   @invalid_attrs %{email: nil, name: nil, password: nil}
 
-  def fixture(:user) do
-    {:ok, user} = Banking.create_user(@valid_attrs)
-    user
-  end
-
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
-
-  defp create_user(_) do
-    user = fixture(:user)
-    %{user: user}
   end
 
   describe "sign_up/1" do
