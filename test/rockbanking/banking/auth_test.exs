@@ -15,7 +15,7 @@ defmodule RockBanking.Banking.AuthTest do
         password: password
       }
 
-      assert {:ok, %User{}} = Banking.create_user(attrs)
+      assert {:ok, %User{} = user} = Banking.create_user(attrs)
       assert {:ok, %User{}} = Auth.authenticate(email, password)
     end
 

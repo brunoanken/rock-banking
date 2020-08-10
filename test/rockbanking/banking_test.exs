@@ -2,6 +2,7 @@ defmodule RockBanking.BankingTest do
   use RockBanking.DataCase
 
   alias RockBanking.Banking
+  alias RockBanking.Banking.{User}
 
   describe "create_user/1" do
     test "returns success and a created user when attrs passed are valid" do
@@ -110,6 +111,51 @@ defmodule RockBanking.BankingTest do
     test "returns nil when no user is found" do
       id = 0
       assert Banking.get_user(id) == nil
+    end
+  end
+
+  describe "sign_in/1" do
+    test "returns an :ok and a user when a valid combination of user and password are received" do
+      email = "some@email.net"
+      name = "My Name"
+      password = "1234"
+
+      attrs = %{
+        email: email,
+        name: name,
+        password: password
+      }
+
+      assert {:ok, %User{}} = Banking.create_user(attrs)
+      assert {:ok, %User{} = user} = Banking.sign_in(%{"email" => email, "password" => password})
+      assert user.email == email
+      assert user.name == name
+    end
+
+    test "returns an :error and a message when an invalid combination of user and password are received" do
+      email = "some@email.net"
+      name = "My Name"
+      password = "1234"
+
+      attrs = %{
+        email: email,
+        name: name,
+        password: password
+      }
+
+      assert {:ok, %User{}} = Banking.create_user(attrs)
+
+      some_email = "wrong@email.net"
+      some_password = "5678"
+
+      assert {:error, :invalid_email_and_password_combination} =
+               Banking.sign_in(%{"email" => email, "password" => some_password})
+
+      assert {:error, :invalid_user} =
+               Banking.sign_in(%{"email" => some_email, "password" => password})
+
+      assert {:error, :invalid_user} =
+               Banking.sign_in(%{"email" => some_email, "password" => some_password})
     end
   end
 end
