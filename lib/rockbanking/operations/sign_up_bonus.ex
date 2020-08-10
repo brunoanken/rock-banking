@@ -1,4 +1,7 @@
 defmodule RockBanking.Operations.SignUpBonus do
+  @moduledoc """
+  Contains all the operations and data manipulations related to the sign up bonus.
+  """
   use Ecto.Schema
   import Ecto.{Changeset, Multi}
   alias RockBanking.Banking.User
