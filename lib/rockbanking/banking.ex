@@ -1,12 +1,12 @@
 defmodule RockBanking.Banking do
   @moduledoc """
-  The Banking context. It is responsible to manage all users and operations related to banking.
+  The Banking context.
+  It is responsible to manage all users and operations related to banking.
   """
 
   import Ecto.Query, warn: false
   alias RockBanking.Repo
-
-  alias RockBanking.Banking.User
+  alias RockBanking.Banking.{User, Auth}
 
   @doc """
   Creates a user.
@@ -21,7 +21,13 @@ defmodule RockBanking.Banking do
   Gets a user by ID.
   """
   def get_user(id) do
-    %User{}
-    |> Repo.get(id)
+    Repo.get(User, id)
+  end
+
+  @doc """
+  Authenticates a user.
+  """
+  def sign_in(%{"email" => email, "password" => password}) do
+    Auth.authenticate(email, password)
   end
 end
