@@ -93,4 +93,23 @@ defmodule RockBanking.BankingTest do
       assert %{email: ["has already been taken"]} = errors_on(changeset)
     end
   end
+
+  describe "get_user/1" do
+    test "returns a user when an existing id is received" do
+      attrs = %{
+        email: "some@email.net",
+        name: "My Name",
+        password: "1234"
+      }
+
+      assert {:ok, %{id: id}} = Banking.create_user(attrs)
+
+      assert Banking.get_user(id).id == id
+    end
+
+    test "returns nil when no user is found" do
+      id = 0
+      assert Banking.get_user(id) == nil
+    end
+  end
 end
