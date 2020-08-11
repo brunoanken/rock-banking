@@ -16,4 +16,15 @@ defmodule RockBanking.Operations do
     |> SignUpBonus.create(%SignUpBonus{})
     |> Repo.transaction()
   end
+
+  alias RockBanking.Operations.Withdraw
+
+  @doc """
+  Creates a withdraw.
+  """
+  def create_withdraw(attrs \\ %{}, user) do
+    %Withdraw{}
+    |> Withdraw.create(attrs, user)
+    |> Repo.transaction()
+  end
 end

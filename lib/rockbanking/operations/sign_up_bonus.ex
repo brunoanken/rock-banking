@@ -25,6 +25,7 @@ defmodule RockBanking.Operations.SignUpBonus do
   def create(user \\ %User{}, sign_up_bonus) do
     amount = 1000
     new_balance = user.balance + amount
+
     user_changeset = User.update_balance(user, %{balance: new_balance})
     sign_up_bonus_changeset = changeset(sign_up_bonus, %{amount: amount, user_id: user.id})
 

@@ -4,7 +4,7 @@ defmodule RockBanking.Banking.User do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias RockBanking.Operations.SignUpBonus
+  alias RockBanking.Operations.{SignUpBonus, Withdraw}
 
   schema "users" do
     field :balance, :float, default: 0.00, null: false
@@ -13,6 +13,7 @@ defmodule RockBanking.Banking.User do
     field :password, :string, null: true, virtual: true
     field :password_hash, :string, null: false
     has_one :sign_up_bonus, SignUpBonus
+    has_many :withdraw, Withdraw
 
     timestamps()
   end
@@ -47,7 +48,7 @@ defmodule RockBanking.Banking.User do
   def validate_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     case is_string_a_valid_integer?(password) do
       true -> changeset
-      _ -> add_error(changeset, :password, "Invalid format")
+      _ -> add_error(changeset, :password, "invalid format")
     end
   end
 
