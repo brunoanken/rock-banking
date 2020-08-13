@@ -40,8 +40,6 @@ defmodule RockBanking.Operations do
 
     case get_user(to_user_id) do
       %User{} = to_user ->
-        IO.inspect(to_user)
-
         %Transfer{}
         |> Transfer.create(attrs, from_user, to_user)
         |> Repo.transaction()
