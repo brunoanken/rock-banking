@@ -1,4 +1,7 @@
 defmodule RockBanking.Operations.Withdraw do
+  @moduledoc """
+  Contains all the needed operations to perform withdraws for users.
+  """
   use Ecto.Schema
   import Ecto.{Changeset, Multi}
   import RockBanking.Operations.Helpers

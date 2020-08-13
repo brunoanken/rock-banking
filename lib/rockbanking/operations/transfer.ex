@@ -1,4 +1,7 @@
 defmodule RockBanking.Operations.Transfer do
+  @moduledoc """
+  Contains all the needed operations and rules to create transfers between user accounts.
+  """
   use Ecto.Schema
   import Ecto.{Changeset, Multi}
   import RockBanking.Operations.Helpers

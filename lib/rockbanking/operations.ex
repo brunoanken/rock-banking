@@ -26,9 +26,19 @@ defmodule RockBanking.Operations do
   Creates a withdraw.
   """
   def create_withdraw(attrs \\ %{}, user) do
-    %Withdraw{}
-    |> Withdraw.create(attrs, user)
-    |> Repo.transaction()
+    withdraw =
+      %Withdraw{}
+      |> Withdraw.create(attrs, user)
+      |> Repo.transaction()
+
+    case withdraw do
+      {:ok, entities} ->
+        Notifications.Email.send_withdraw_email(entities)
+        withdraw
+
+      _ ->
+        withdraw
+    end
   end
 
   @doc """
