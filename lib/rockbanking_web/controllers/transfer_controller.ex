@@ -1,4 +1,4 @@
-defmodule RockBankingWeb.WithdrawController do
+defmodule RockBankingWeb.TransferController do
   use RockBankingWeb, :controller
 
   alias RockBanking.Operations
@@ -8,18 +8,18 @@ defmodule RockBankingWeb.WithdrawController do
   def create(conn, params) do
     authenticated_user = Guardian.Plug.current_resource(conn)
 
-    case Operations.create_withdraw(params, authenticated_user) do
+    case Operations.create_transfer(params, authenticated_user) do
       {:ok, result} ->
-        %{withdraw: withdraw} = result
+        %{transfer: transfer} = result
 
         conn
         |> put_status(:created)
-        |> render("show.json", withdraw: withdraw)
+        |> render("show.json", transfer: transfer)
 
       _ ->
         conn
         |> put_status(422)
-        |> json(%{status: "could not perform withdraw"})
+        |> json(%{status: "could not perform transfer"})
     end
   end
 end

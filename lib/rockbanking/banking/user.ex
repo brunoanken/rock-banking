@@ -4,7 +4,7 @@ defmodule RockBanking.Banking.User do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias RockBanking.Operations.{SignUpBonus, Withdraw}
+  alias RockBanking.Operations.{SignUpBonus, Withdraw, Transfer}
 
   schema "users" do
     field :balance, :float, default: 0.00, null: false
@@ -14,6 +14,7 @@ defmodule RockBanking.Banking.User do
     field :password_hash, :string, null: false
     has_one :sign_up_bonus, SignUpBonus
     has_many :withdraw, Withdraw
+    has_many :transfers, Transfer
 
     timestamps()
   end

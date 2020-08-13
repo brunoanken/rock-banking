@@ -74,17 +74,17 @@ defmodule RockBanking.Banking.UserTest do
     test "returns a changeset with a password error when the changeset passed to it has a password that is not a valid integer" do
       user_changeset = %Ecto.Changeset{valid?: true, changes: %{password: "12.4"}}
 
-      assert %Ecto.Changeset{errors: [password: {"Invalid format", []}]} =
+      assert %Ecto.Changeset{errors: [password: {"invalid format", []}]} =
                User.validate_password(user_changeset)
 
       user_changeset = %Ecto.Changeset{valid?: true, changes: %{password: "aaaa"}}
 
-      assert %Ecto.Changeset{errors: [password: {"Invalid format", []}]} =
+      assert %Ecto.Changeset{errors: [password: {"invalid format", []}]} =
                User.validate_password(user_changeset)
 
       user_changeset = %Ecto.Changeset{valid?: true, changes: %{password: ""}}
 
-      assert %Ecto.Changeset{errors: [password: {"Invalid format", []}]} =
+      assert %Ecto.Changeset{errors: [password: {"invalid format", []}]} =
                User.validate_password(user_changeset)
     end
   end

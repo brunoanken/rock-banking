@@ -4,9 +4,12 @@ defmodule RockBanking.Operations do
   """
 
   import Ecto.Query, warn: false
-  alias RockBanking.Repo
+  import RockBanking.Banking
 
+  alias RockBanking.Repo
   alias RockBanking.Operations.SignUpBonus
+  alias RockBanking.Operations.Transfer
+  alias RockBanking.Banking.User
 
   @doc """
   Creates a sign_up_bonus.
@@ -26,5 +29,25 @@ defmodule RockBanking.Operations do
     %Withdraw{}
     |> Withdraw.create(attrs, user)
     |> Repo.transaction()
+  end
+
+  @doc """
+  Creates a transfer.
+
+  """
+  def create_transfer(attrs \\ %{}, from_user) do
+    %{"to_user_id" => to_user_id} = attrs
+
+    case get_user(to_user_id) do
+      %User{} = to_user ->
+        IO.inspect(to_user)
+
+        %Transfer{}
+        |> Transfer.create(attrs, from_user, to_user)
+        |> Repo.transaction()
+
+      nil ->
+        nil
+    end
   end
 end

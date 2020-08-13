@@ -1,6 +1,7 @@
 defmodule RockBanking.Operations.Withdraw do
   use Ecto.Schema
   import Ecto.{Changeset, Multi}
+  import RockBanking.Operations.Helpers
 
   alias RockBanking.Banking.User
 
@@ -12,10 +13,8 @@ defmodule RockBanking.Operations.Withdraw do
   end
 
   def create_changeset(withdraw, attrs, user) do
-    IO.puts("changeset")
     %{"amount" => amount} = attrs
     %User{balance: balance, id: user_id} = user
-    IO.puts(user_id)
 
     withdraw
     |> cast(attrs, [:amount])
@@ -28,8 +27,6 @@ defmodule RockBanking.Operations.Withdraw do
 
   @doc false
   def create(withdraw, attrs, user) do
-    IO.puts("create withdraw.ex")
-
     %{"amount" => amount} = attrs
     %User{balance: balance} = user
 
@@ -41,13 +38,4 @@ defmodule RockBanking.Operations.Withdraw do
     |> insert(:withdraw, withdraw_changeset)
     |> update(:user, user_changeset)
   end
-
-  def validate_balance_after_withdraw(%Ecto.Changeset{valid?: true} = changeset, amount, balance) do
-    case amount > 0 && balance - amount >= 0 do
-      true -> changeset
-      false -> add_error(changeset, :amount, "balance not enough for this amount")
-    end
-  end
-
-  def validate_balance_after_withdraw(changeset, _, _), do: changeset
 end

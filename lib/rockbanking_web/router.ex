@@ -20,6 +20,7 @@ defmodule RockBankingWeb.Router do
     pipe_through [:api, :authenticated]
 
     post("/withdraw", WithdrawController, :create)
+    post("/transfer", TransferController, :create)
   end
 
   # Enables LiveDashboard only for development
