@@ -14,7 +14,7 @@ defmodule RockBanking.Banking.User do
     field :password_hash, :string, null: false
     has_one :sign_up_bonus, SignUpBonus
     has_many :withdraw, Withdraw
-    has_many :transfers, Transfer
+    has_many :transfers, Transfer, foreign_key: :from_user_id
 
     timestamps()
   end

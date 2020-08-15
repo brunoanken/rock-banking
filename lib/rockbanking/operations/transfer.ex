@@ -11,7 +11,6 @@ defmodule RockBanking.Operations.Transfer do
   schema "transfers" do
     field :amount, :float
     belongs_to :from_user, User, foreign_key: :from_user_id
-    belongs_to :to_user, User, foreign_key: :to_user_id
 
     timestamps()
   end
