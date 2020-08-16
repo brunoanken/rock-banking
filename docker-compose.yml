@@ -1,0 +1,31 @@
+version: '3'
+
+networks:
+    internal:
+      external: false
+
+services:
+    api:
+        ports:
+            - "4000:4000"
+        build: .
+        depends_on: 
+            - db
+        networks:
+            - internal
+        environment:
+            PGUSER: postgres
+            PGPASSWORD: postgres
+            PGPORT: 5432
+            PGHOST: db
+    db:
+        image: postgres:10
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            PGDATA: /var/lib/postgresql/data/pgdata
+        # volumes:
+        #     - ./pgdata:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        restart: always

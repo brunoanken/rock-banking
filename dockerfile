@@ -10,9 +10,9 @@ COPY . /app
 WORKDIR /app
 
 # Install hex package manager
-RUN mix local.hex --force
-
-# Compile the project
-RUN mix do compile
+RUN mix local.hex --force && \
+    mix local.rebar --force
+RUN mix deps.get --force
+RUN mix compile
 
 CMD ["/app/entrypoint.sh"]
