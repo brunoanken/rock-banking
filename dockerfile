@@ -14,5 +14,7 @@ RUN mix local.hex --force && \
     mix local.rebar --force
 RUN mix deps.get --force
 RUN mix compile
+RUN mix ecto.create
+RUN mix ecto.migrate
 
 CMD ["/app/entrypoint.sh"]
