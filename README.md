@@ -12,11 +12,15 @@ A API estará disponível em [`localhost:4000`](http://localhost:4000)
 
 ## Rodando localmente com docker
 
-- Realize o build rodando `docker build --tag rockbanking .` dentro da raíz do projeto
+- Realize o build rodando `docker-compose build`
 
-- Inicie o container com ``
+- Suba toda a stack com `docker-compose up`
 
-  Este método irá falhar caso nenhum banco de dados esteja rodando localmente na porta `5432`.
+  A aplicação Phoenix estará disponível na porta `4000` e o banco de dados Postgres estará na porta `5432`.
+
+## Testando
+
+Simples: `mix test` na raíz do projeto.
 
 ## API
 
@@ -126,5 +130,4 @@ Não foi implementada nenhuma maneira automática de realizar deploys então o r
 
 Para subir alterações da aplicação basta rodar `git push gigalixir master`*.
 
-**Credentials in Gigalixir required*.
-
+**Credenciais configuradas do Gigalixir são necessárias*.
